@@ -1,66 +1,198 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page Berita</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <!-- Header -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+@extends('layout.main')
+
+@section('title')
+    Berita
+@endsection
+
+@section('content')
+<main>
+    <!-- Trending Area Start -->
+    <div class="trending-area fix">
         <div class="container">
-            <a class="navbar-brand" href="#">Portal Berita</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link " href="{{ route('news.beranda') }}">Beranda</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="{{ route('news.berita') }}">Berita</a></li>
-                    <li class="nav-item"><a class="nav-link " href="{{ route('profile.edit') }}">Profile</a></li>
-                    <li class="nav-item">
-                        <form action="{{ route('logout') }}" method="post">
-                            @csrf
-                            <button type="submit" class="nav-link" href="#contact">Logout</a>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+            <div class="trending-main">
+                <!-- Trending Tittle -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="trending-tittle">
+                            <strong>Trending now</strong>
+                            <!-- <p>Rem ipsum dolor sit amet, consectetur adipisicing elit.</p> -->
+                            <div class="trending-animated">
+                                <ul id="js-news" class="js-hidden">
+                                    @foreach ($topNews['data'] as $tn)
+                                        <li class="news-item">{{ $tn['title'] }}</li>
+                                    @endforeach
+                                    </li>
+                                </ul>
+                            </div>
 
-    <!-- Hero Section -->
-    <div class="bg-light text-center py-5">
-        <h1>Selamat Datang di Portal Berita</h1>
-        <p class="lead">Berita terkini dan terpercaya hanya untuk Anda.</p>
-    </div>
-
-    <!-- News Section -->
-    <div id="news" class="container my-5">
-        <h2 class="mb-4">Berita Terkini</h2>
-        <div class="row">
-            @foreach ($news as $item)
-                <div class="col-md-4">
-                    <div class="card mb-4">
-                        <img src="{{ $item['image']['small'] }}" class="card-img-top" alt="Gambar Berita">
-                        <div class="card-body">
-                            <p class="text-muted">{{ \Carbon\Carbon::parse($item['isoDate'])->translatedFormat('d F Y, H:i') }}</p>
-                            <h5 class="card-title">{{ $item['title'] }}</h5>
-                            <p class="card-text">{{ Str::limit($item['contentSnippet'], 100, '...') }}</p>
-                            <a href="{{ $item['link'] }}" class="btn btn-primary">Baca Selengkapnya</a>
                         </div>
                     </div>
                 </div>
-            @endforeach
+                <div class="row">
+                    <div class="col-lg-8">
+                        <!-- Trending Top -->
+                        @php
+                            $tk = $terkini['data'][0];
+                        @endphp
+                        <div class="trending-top mb-30">
+                            <div class="trend-top-img">
+                                <img src="{{ $tk['image'] }}" alt="">
+                                <div class="trend-top-cap">
+                                    <span>Terkini</span>
+                                    <h2><a href="">{{ $tk['title'] }}</a></h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Riht content -->
+                    <div class="col-lg-4">
+                        @foreach (collect($topNews['data'])->take(3) as $tp)
+                        <div class="trand-right-single d-flex">
+                            <div class="trand-right-img">
+                                <img src="{{ $tp['image'] }}" alt="" style="width: 200px">
+                            </div>
+                            <div class="trand-right-cap">
+                                <span class="color2">Top News</span>
+                                <h4><a href="">{{ $tp['title'] }}</a></h4>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Trending Area End -->
+    <!--   Politik start -->
+    <div class="weekly-news-area pt-50">
+        <div class="container">
+            <div class="weekly-wrapper">
+                <!-- section Tittle -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-tittle mb-30">
+                            <h3>Politik</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="weekly-news-active dot-style d-flex dot-style">
+                            @foreach ($politik['data'] as $p)
+                            <div class="weekly-single">
+                                <div class="weekly-img">
+                                    <img src="{{ $p['image'] }}" alt="">
+                                </div>
+                                <div class="weekly-caption">
+                                    <span class="color1">Politik</span>
+                                    <h4><a href="">{{ $p['title'] }}</a></h4>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; {{ date('Y') }} Portal Berita. Semua Hak Dilindungi.</p>
-    </footer>
+    <!--   Politik start -->
+    <div class="weekly-news-area pt-50">
+        <div class="container">
+            <div class="weekly-wrapper">
+                <!-- section Tittle -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-tittle mb-30">
+                            <h3>Politik</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="weekly-news-active dot-style d-flex dot-style">
+                            @foreach ($politik['data'] as $p)
+                            <div class="weekly-single">
+                                <div class="weekly-img">
+                                    <img src="{{ $p['image'] }}" alt="">
+                                </div>
+                                <div class="weekly-caption">
+                                    <span class="color1">Politik</span>
+                                    <h4><a href="">{{ $p['title'] }}</a></h4>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <!--   Politik start -->
+    <div class="weekly-news-area pt-50">
+        <div class="container">
+            <div class="weekly-wrapper">
+                <!-- section Tittle -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-tittle mb-30">
+                            <h3>Politik</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="weekly-news-active dot-style d-flex dot-style">
+                            @foreach ($politik['data'] as $p)
+                            <div class="weekly-single">
+                                <div class="weekly-img">
+                                    <img src="{{ $p['image'] }}" alt="">
+                                </div>
+                                <div class="weekly-caption">
+                                    <span class="color1">Politik</span>
+                                    <h4><a href="">{{ $p['title'] }}</a></h4>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--   Politik start -->
+    <div class="weekly-news-area pt-50">
+        <div class="container">
+            <div class="weekly-wrapper">
+                <!-- section Tittle -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="section-tittle mb-30">
+                            <h3>Politik</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="weekly-news-active dot-style d-flex dot-style">
+                            @foreach ($politik['data'] as $p)
+                            <div class="weekly-single">
+                                <div class="weekly-img">
+                                    <img src="{{ $p['image'] }}" alt="">
+                                </div>
+                                <div class="weekly-caption">
+                                    <span class="color1">Politik</span>
+                                    <h4><a href="">{{ $p['title'] }}</a></h4>
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@endsection

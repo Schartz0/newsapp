@@ -19,7 +19,6 @@ Route::middleware('CheckLogin')->group(function (){
     Route::post('/logout', [AuthController::class,'logout'])->name('logout');
     Route::get('/profile', [UserController::class, 'edit'])->name('profile.edit');
     Route::post('/profile/update', [UserController::class, 'update'])->name('profile.update');
-
 });
 
 
